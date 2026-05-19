@@ -202,14 +202,12 @@ function Dashboard() {
               formData.append("file", file);
               try {
                 const token = localStorage.getItem("auraa_token");
-                const res = await fetch(
-                  `http://localhost:8000/admin/dishes/${uploadTarget.id}/image`,
-                  {
-                    method: "POST",
-                    headers: { Authorization: `Bearer ${token}` },
-                    body: formData,
-                  },
-                );
+                const API_BASE = import.meta.env.VITE_API_BASE ?? "http://localhost:8000";
+                const res = await fetch(`${API_BASE}/admin/dishes/${uploadTarget.id}/image`, {
+                  method: "POST",
+                  headers: { Authorization: `Bearer ${token}` },
+                  body: formData,
+                });
                 if (!res.ok) throw new Error("Upload failed");
                 toast.success("Image uploaded");
                 setUploadTarget(null);
