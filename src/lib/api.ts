@@ -1,4 +1,4 @@
-export const API_BASE = "http://localhost:8000";
+export const API_BASE = import.meta.env.VITE_API_BASE ?? "http://localhost:8000";
 export const TOKEN_KEY = "auraa_token";
 
 export function getToken(): string | null {
@@ -29,7 +29,10 @@ export class ApiError extends Error {
 
 export async function api<T = unknown>(path: string, opts: ApiOptions = {}): Promise<T> {
   const { auth, json, headers, ...rest } = opts;
-  const h: Record<string, string> = { "Content-Type": "application/json", ...(headers as Record<string, string>) };
+  const h: Record<string, string> = {
+    "Content-Type": "application/json",
+    ...(headers as Record<string, string>),
+  };
   if (auth) {
     const t = getToken();
     if (t) h["Authorization"] = `Bearer ${t}`;
@@ -52,7 +55,8 @@ export async function api<T = unknown>(path: string, opts: ApiOptions = {}): Pro
     let msg = `Request failed (${res.status})`;
     try {
       const data = await res.json();
-      if (data?.detail) msg = typeof data.detail === "string" ? data.detail : JSON.stringify(data.detail);
+      if (data?.detail)
+        msg = typeof data.detail === "string" ? data.detail : JSON.stringify(data.detail);
     } catch {}
     throw new ApiError(msg, res.status);
   }
