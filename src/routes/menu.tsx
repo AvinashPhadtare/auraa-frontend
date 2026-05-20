@@ -149,11 +149,7 @@ function MenuPage() {
                   }`}
                 >
                   {d.image_url ? (
-                    <img
-                      src={`http://localhost:8000${d.image_url}`}
-                      alt={d.dish_name}
-                      className="w-full h-40 object-cover"
-                    />
+                    <img src={d.image_url} alt={d.dish_name} className="w-full h-40 object-cover" />
                   ) : (
                     <div className="w-full h-40 bg-secondary flex items-center justify-center">
                       <span className="text-muted-foreground text-xs">No image</span>
